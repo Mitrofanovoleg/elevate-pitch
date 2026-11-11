@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ask Once, Use Twice | Executive Pitch | Oleg Mitrofanov</title>
+<meta name="description" content="Executive pitch for the Elevate Festival case study (FH JOANNEUM, COS25): collect partner and sponsor information once and use it for both 2029 editions.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #000;
+    --paper: #fff;
+    --yellow: #ffed00;
+    --sage: #6f8b78;
+    --graphite: #212121;
+    --bg: #fff;
+    --fg: #000;
+    --gutter: clamp(16px, 4vw, 56px);
+    --nav-h: 44px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: "Archivo", "Helvetica Neue", Arial, sans-serif;
+    background: var(--bg);
+    color: var(--fg);
+    transition: background-color .8s ease, color .8s ease;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+  img { display: block; max-width: 100%; }
+  a { color: inherit; }
+
+  /* Top bar, in the spirit of the festival site */
+  .bar {
+    position: fixed; inset: 0 0 auto 0; height: var(--nav-h); z-index: 50;
+    background: var(--ink); color: var(--paper);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 var(--gutter);
+    font-size: 12px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase;
+  }
+  .bar .mark { font-weight: 900; letter-spacing: .12em; text-decoration: none; }
+  .bar nav { display: flex; gap: 2px; }
+  .bar nav a {
+    text-decoration: none; padding: 0 10px; height: var(--nav-h);
+    display: flex; align-items: center; transition: background .25s, color .25s;
+  }
+  .bar nav a.active { background: var(--yellow); color: var(--ink); }
+  @media (max-width: 760px) { .bar nav { display: none; } }
+
+  /* Hero */
+  .hero {
+    position: relative; height: 100vh; min-height: 560px; overflow: hidden;
+    background: var(--ink); color: var(--paper);
+  }
+  .hero .photo {
+    position: absolute; inset: -12% 0 -12% 0;
+    background: url("https://elevate.at/fileadmin/_processed_/a/e/csm_2025_03_07_Music_DOM_c_PhilippeGerlach_20_web_bf637c46c2.jpg") center/cover no-repeat;
+    filter: grayscale(1) contrast(1.15) brightness(.55);
+    will-change: transform;
+  }
+  .hero .inner {
+    position: relative; z-index: 2; height: 100%;
+    display: flex; flex-direction: column; justify-content: flex-end;
+    padding: calc(var(--nav-h) + 24px) var(--gutter) 9vh;
+  }
+  .kicker { font-size: 13px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+  .hero h1 {
+    font-weight: 900; text-transform: uppercase; line-height: .86;
+    font-size: clamp(56px, 14vw, 220px); letter-spacing: -.02em;
+    margin: 18px 0 22px;
+    mix-blend-mode: difference;
+  }
+  .hero h1 span { display: block; will-change: transform; }
+  .tag {
+    display: inline-block; background: var(--yellow); color: var(--ink);
+    font-weight: 800; text-transform: uppercase; letter-spacing: .02em;
+    padding: 8px 12px; font-size: clamp(14px, 1.8vw, 22px);
+  }
+  .meta { margin-top: 22px; font-size: 14px; line-height: 1.5; max-width: 760px; opacity: .9; }
+  .meta strong { font-weight: 800; }
+  .scroll-cue {
+    position: absolute; right: var(--gutter); bottom: 9vh; z-index: 2;
+    font-size: 12px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+    writing-mode: vertical-rl; animation: bob 2.2s ease-in-out infinite;
+  }
+  @keyframes bob { 50% { transform: translateY(10px); } }
+
+  /* Numbers band */
+  .numbers { position: relative; }
+  .numbers .pin {
+    position: sticky; top: 0; height: 100vh;
+    display: grid; place-items: start center; overflow: hidden;
+    padding-top: calc(var(--nav-h) + 10vh);
+    background: var(--yellow); color: var(--ink);
+  }
+  .numbers .grid {
+    width: 100%; padding: 0 var(--gutter);
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;
+  }
+  .num { border-top: 3px solid var(--ink); padding-top: 14px; }
+  .num b { display: block; font-weight: 900; line-height: .9; font-size: clamp(64px, 12vw, 190px); letter-spacing: -.03em; }
+  .num span { display: block; margin-top: 10px; font-weight: 700; font-size: clamp(14px, 1.5vw, 20px); text-transform: uppercase; }
+  .num small { display: block; margin-top: 6px; font-size: 13px; opacity: .7; }
+  .numbers .over {
+    position: relative; z-index: 2; margin-top: -22vh;
+    background: var(--ink); color: var(--paper);
+    padding: 12vh var(--gutter);
+  }
+  .dots { display: grid; grid-template-columns: repeat(13, 1fr); gap: 10px; max-width: 760px; }
+  .dots i {
+    aspect-ratio: 1; border-radius: 50%; background: var(--paper);
+    transform: scale(.2); opacity: 0; transition: transform .5s ease, opacity .5s ease;
+  }
+  .dots.in i { transform: scale(1); opacity: 1; }
+  .dots.twice i:nth-child(odd) { background: var(--yellow); }
+  .over p.lead { margin-top: 28px; max-width: 760px; font-size: clamp(20px, 2.4vw, 32px); line-height: 1.25; font-weight: 500; }
+
+  /* Chapters: a pinned cover, and a panel that slides over it */
+  .chapter { position: relative; }
+  .cover {
+    position: sticky; top: 0; height: 100vh; overflow: hidden;
+    display: flex; flex-direction: column; justify-content: flex-start;
+    padding: calc(var(--nav-h) + 6vh) var(--gutter) 8vh;
+  }
+  .cover .no {
+    font-weight: 900; line-height: .8; font-size: clamp(120px, 30vw, 460px); letter-spacing: -.05em;
+    color: transparent; -webkit-text-stroke: 2px var(--fg); opacity: .9;
+    will-change: transform;
+  }
+  .cover h2 {
+    font-weight: 900; text-transform: uppercase; line-height: .95; letter-spacing: -.01em;
+    font-size: clamp(36px, 6.5vw, 104px); max-width: 12ch; margin-top: -0.35em;
+  }
+  .cover .sub { margin-top: 18px; font-size: 14px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; opacity: .75; }
+  .cover .pic {
+    position: absolute; right: var(--gutter); top: 18vh; width: min(38vw, 520px); aspect-ratio: 4/5;
+    background-size: cover; background-position: center; filter: grayscale(1) contrast(1.1);
+    will-change: transform; z-index: -1;
+  }
+  @media (max-width: 760px) { .cover .pic { opacity: .35; width: 70vw; } }
+
+  .panel {
+    position: relative; z-index: 2; margin-top: -30vh;
+    margin-left: var(--gutter); margin-right: var(--gutter);
+    background: var(--paper); color: var(--ink);
+    padding: clamp(28px, 5vw, 72px);
+    box-shadow: 0 -30px 60px rgba(0,0,0,.12);
+  }
+  .panel.dark { background: var(--graphite); color: var(--paper); }
+  .qa + .qa { margin-top: clamp(32px, 5vw, 56px); padding-top: clamp(24px, 3vw, 36px); border-top: 1px solid currentColor; border-color: rgba(127,127,127,.35); }
+  .qa h3 {
+    font-size: 12px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase;
+    display: inline-block; background: var(--ink); color: var(--paper); padding: 5px 8px;
+  }
+  .panel.dark .qa h3 { background: var(--yellow); color: var(--ink); }
+  .qa p, .qa li { margin-top: 16px; font-size: clamp(19px, 2.1vw, 28px); line-height: 1.3; font-weight: 500; max-width: 32ch; max-width: 900px; }
+  .qa ul { list-style: none; }
+  .qa li { padding-left: 1.2em; position: relative; }
+  .qa li::before { content: ""; position: absolute; left: 0; top: .5em; width: .5em; height: .5em; background: var(--yellow); outline: 1px solid var(--ink); }
+  .panel.dark .qa li::before { outline-color: var(--yellow); }
+  .qa .big { font-weight: 900; text-transform: uppercase; font-size: clamp(32px, 5vw, 72px); line-height: .95; }
+  .note { display: inline-block; font-size: .6em; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; opacity: .65; vertical-align: middle; }
+  .ask { margin-top: 24px; background: var(--yellow); color: var(--ink); padding: 18px 20px; font-weight: 800; font-size: clamp(18px, 2vw, 26px); line-height: 1.25; max-width: 900px; }
+
+  .goals { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 18px; }
+  .goal { background: var(--ink); color: var(--paper); padding: 22px; }
+  .goal b { display: block; font-weight: 900; font-size: clamp(40px, 5.5vw, 80px); line-height: .9; color: var(--yellow); }
+  .goal span { display: block; margin-top: 12px; font-size: 16px; line-height: 1.35; font-weight: 600; }
+  @media (max-width: 760px) { .goals, .numbers .grid { grid-template-columns: 1fr; } .numbers .pin { height: auto; min-height: 100vh; padding: 14vh 0; } }
+
+  /* Moving photo strip */
+  .strip { overflow: hidden; padding: 14vh 0; position: relative; z-index: 1; }
+  .strip .row { display: flex; gap: 16px; width: max-content; will-change: transform; }
+  .strip figure { width: clamp(220px, 28vw, 420px); }
+  .strip img { width: 100%; aspect-ratio: 3/2; object-fit: cover; filter: grayscale(1) contrast(1.1); transition: filter .6s; }
+  .strip img:hover { filter: none; }
+  .strip figcaption { font-size: 11px; margin-top: 6px; letter-spacing: .04em; text-transform: uppercase; opacity: .6; }
+
+  /* Reveal */
+  [data-reveal] { opacity: 0; transform: translateY(40px); transition: opacity .8s ease, transform .8s cubic-bezier(.2,.7,.2,1); }
+  [data-reveal].in { opacity: 1; transform: none; }
+
+  /* Footer */
+  footer { position: relative; z-index: 3; background: var(--ink); color: var(--paper); padding: 12vh var(--gutter) 8vh; }
+  footer h2 { font-weight: 900; text-transform: uppercase; font-size: clamp(28px, 4vw, 56px); line-height: 1; }
+  footer .cols { display: grid; grid-template-columns: 1.2fr 1fr; gap: 48px; margin-top: 32px; }
+  footer h4 { font-size: 12px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: var(--yellow); margin-bottom: 12px; }
+  footer p, footer li { font-size: 15px; line-height: 1.55; }
+  footer ul { list-style: none; }
+  footer li + li { margin-top: 6px; }
+  footer .fine { margin-top: 48px; padding-top: 20px; border-top: 1px solid #444; font-size: 12px; line-height: 1.6; opacity: .7; }
+  @media (max-width: 760px) { footer .cols { grid-template-columns: 1fr; } }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    [data-reveal] { opacity: 1; transform: none; transition: none; }
+    .scroll-cue { animation: none; }
+    .dots i { transform: none; opacity: 1; transition: none; }
+  }
+</style>
+</head>
+<body>
+
+<header class="bar">
+  <a class="mark" href="#top">Ask once, use twice</a>
+  <nav aria-label="Sections">
+    <a href="#summary">Summary</a>
+    <a href="#now">Current state</a>
+    <a href="#challenge">Challenge</a>
+    <a href="#scope">Scope</a>
+    <a href="#success">Success</a>
+  </nav>
+</header>
+
+<section class="hero" id="top" data-bg="#000" data-fg="#fff">
+  <div class="photo" data-speed="0.25" role="img" aria-label="Concert at Dom im Berg, Elevate Festival 2025"></div>
+  <div class="inner">
+    <div class="kicker">Executive pitch · Elevate Festival · Pillar: Operational capacity</div>
+    <h1><span data-shift="-0.15">Ask once,</span><span data-shift="0.15">use twice</span></h1>
+    <div><span class="tag">Getting ready for the 25th anniversary</span></div>
+    <p class="meta"><strong>Oleg Mitrofanov</strong> · Role in the case study: Marketing &amp; Communications Director · To: Festival Director<br>Course assignment, FH JOANNEUM, Enterprise Content Management &amp; Operations (COS25). Fictional scenario, not affiliated with Elevate Festival.</p>
+  </div>
+  <div class="scroll-cue" aria-hidden="true">Scroll</div>
+</section>
+
+<section class="numbers" data-bg="#ffed00" data-fg="#000">
+  <div class="pin">
+    <div class="grid">
+      <div class="num" data-reveal><b data-count="52">52</b><span>partners and sponsors</span><small>listed on the current website</small></div>
+      <div class="num" data-reveal><b>×2</b><span>requests in 2029</span><small>two editions, the same team</small></div>
+      <div class="num" data-reveal><b>≈<span data-count="50" style="display:inline;margin:0;font-size:inherit;text-transform:none">50</span>h</b><span>of extra work</span><small>estimate, for one festival</small></div>
+    </div>
+  </div>
+  <div class="over">
+    <div class="dots" id="dots" aria-hidden="true"></div>
+    <p class="lead" data-reveal>Every dot is one partner or sponsor. Every year, each of them is asked for the same information again. In 2029, with two festivals, they would be asked twice.</p>
+  </div>
+</section>
+
+<section class="chapter" id="summary" data-bg="#ffffff" data-fg="#000">
+  <div class="cover">
+    <div class="no" data-speed="-0.12">01</div>
+    <h2>Executive summary</h2>
+    <div class="sub">Why this matters to the executive</div>
+    <div class="pic" data-speed="0.18" style="background-image:url('https://elevate.at/fileadmin/_processed_/a/0/csm_2025_03_05_Opening_Orpheum_c_JohannaLamprecht_04_web_8c2f0c6da9.jpg')"></div>
+  </div>
+  <div class="panel">
+    <div class="qa" data-reveal>
+      <h3>What are the core challenges to scaling what currently exists?</h3>
+      <p>The challenge is scaling the info from partners and sponsors that the Elevate festival receives every year (around 52 partners). In 2029, there will be two Elevate festivals, so it doubles the work for the Elevate team.</p>
+    </div>
+    <div class="qa" data-reveal>
+      <h3>What pillar are you addressing?</h3>
+      <p class="big">Operational capacity</p>
+    </div>
+    <div class="qa" data-reveal>
+      <h3>What opportunity does solving the problem bring?</h3>
+      <ul>
+        <li>Less work for the Partnerships and Sponsorship Manager (without adding additional staff for this task)</li>
+        <li>Lower probability of a mistake</li>
+        <li>Partners and sponsors get visibility without additional requests (for the second Elevate festival)</li>
+      </ul>
+      <p class="ask">I am asking for approval of a one-year project: build it in 2027, test it at the 2028 festival and use it for both editions in 2029.</p>
+    </div>
+  </div>
+</section>
+
+<section class="chapter" id="now" data-bg="#6f8b78" data-fg="#000">
+  <div class="cover">
+    <div class="no" data-speed="-0.12">02</div>
+    <h2>Current state</h2>
+    <div class="sub">Where we are now</div>
+    <div class="pic" data-speed="0.18" style="background-image:url('https://elevate.at/fileadmin/_processed_/9/3/csm_2024_02_28_EROEFFNUNG_c_ClaraWildberger_010_dabafaf89b.jpg')"></div>
+  </div>
+  <div class="panel">
+    <div class="qa" data-reveal>
+      <h3>Brief description of the content system in relation to this pillar</h3>
+      <p>The Partnerships and Sponsorship Manager asks the partners and sponsors to resubmit their information and logos once every year; in 2029, it will be twice per year.</p>
+    </div>
+    <div class="qa" data-reveal>
+      <h3>Why it matters to the organization</h3>
+      <p>The organization gets funding from partners and sponsors, so the Elevate team must make sure that partners get the visibility they paid for.</p>
+    </div>
+    <div class="qa" data-reveal>
+      <h3>Current situation</h3>
+      <p class="big">52 partners and sponsors</p>
+      <p>The current website lists 52 partners and sponsors.</p>
+    </div>
+    <div class="qa" data-reveal>
+      <h3>Primary pain points related to scaling</h3>
+      <ul>
+        <li>52 partners and sponsors × 60 minutes (e-mail writing, downloading the logo, updating the website and other media; final check) = roughly 50 hours of work for one festival <span class="note">estimate</span></li>
+        <li>The festival team doesn't have a centralized folder for valid logos (and until when they are valid)</li>
+        <li>Risk of using outdated info</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<div class="strip" aria-label="Elevate Festival photos">
+  <div class="row" data-strip>
+    <figure><img src="https://elevate.at/fileadmin/_processed_/0/b/csm_2023_03_04_MUSIC_DOM_c_PhilippeGerlach_013_d120e88c52.jpg" alt="Music night at Dom im Berg, 2023" loading="lazy"><figcaption>Dom im Berg 2023 · Philippe Gerlach</figcaption></figure>
+    <figure><img src="https://elevate.at/fileadmin/_processed_/a/0/csm_2025_03_05_Opening_Orpheum_c_JohannaLamprecht_04_web_8c2f0c6da9.jpg" alt="Festival opening at Orpheum, 2025" loading="lazy"><figcaption>Opening, Orpheum 2025 · Johanna Lamprecht</figcaption></figure>
+    <figure><img src="https://elevate.at/fileadmin/_processed_/1/8/csm_2020_03_04_MUSIC_ORPHEUM_c_LenaPrehal_006_bb44091b1d.jpg" alt="Music night at Orpheum, 2020" loading="lazy"><figcaption>Orpheum 2020 · Lena Prehal</figcaption></figure>
+    <figure><img src="https://elevate.at/fileadmin/_processed_/9/3/csm_2024_02_28_EROEFFNUNG_c_ClaraWildberger_010_dabafaf89b.jpg" alt="Festival opening, 2024" loading="lazy"><figcaption>Opening 2024 · Clara Wildberger</figcaption></figure>
+    <figure><img src="https://elevate.at/fileadmin/_processed_/a/e/csm_2025_03_07_Music_DOM_c_PhilippeGerlach_20_web_bf637c46c2.jpg" alt="Concert at Dom im Berg, 2025" loading="lazy"><figcaption>Dom im Berg 2025 · Philippe Gerlach</figcaption></figure>
+  </div>
+</div>
+
+<section class="chapter" id="challenge" data-bg="#000000" data-fg="#fff">
+  <div class="cover">
+    <div class="no" data-speed="-0.12">03</div>
+    <h2>Scaling challenge</h2>
+    <div class="sub">What problems will be solved</div>
+  </div>
+  <div class="panel dark">
+    <div class="qa" data-reveal>
+      <h3>What scalability problem will you address?</h3>
+      <p>Collecting the same info every year without checking on our side if it is still valid.</p>
+    </div>
+    <div class="qa" data-reveal>
+      <h3>What happens if this isn't solved?</h3>
+      <p>We get 50 hours of additional work <span class="note">estimate</span>; partners and sponsors get the same email twice in 2029, and we lose our image as professionals.</p>
+    </div>
+    <div class="qa" data-reveal>
+      <h3>What is the desired future state?</h3>
+      <ul>
+        <li>Getting the info once and adding a "valid until" date</li>
+        <li>The team asks partners and sponsors when something expires (and additionally once every two years)</li>
+        <li>For the second Elevate festival, part of the work will be done in the preparation phase for the first festival</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="chapter" id="scope" data-bg="#ffed00" data-fg="#000">
+  <div class="cover">
+    <div class="no" data-speed="-0.12">04</div>
+    <h2>Scope and objectives</h2>
+    <div class="sub">What we want to achieve</div>
+  </div>
+  <div class="panel">
+    <div class="qa" data-reveal>
+      <h3>What will you focus on?</h3>
+      <p>Getting the info from partners and sponsors (name, logo, description).</p>
+    </div>
+    <div class="qa" data-reveal>
+      <h3>What will you not address in this project?</h3>
+      <p>Information from artists and speakers; info from new partners and sponsors.</p>
+    </div>
+    <div class="qa" data-reveal>
+      <h3>Specific, measurable objectives</h3>
+      <div class="goals">
+        <div class="goal"><b>2 → 1</b><span>Requests to partners and sponsors in 2029</span></div>
+        <div class="goal"><b>0</b><span>Outdated logos or names in 2028 and 2029</span></div>
+        <div class="goal"><b>≈50 h</b><span>Work saved in 2029 (estimate)</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="chapter" id="success" data-bg="#ffffff" data-fg="#000">
+  <div class="cover">
+    <div class="no" data-speed="-0.12">05</div>
+    <h2>Success criteria</h2>
+    <div class="sub">How we'll know if we're successful</div>
+    <div class="pic" data-speed="0.18" style="background-image:url('https://elevate.at/fileadmin/_processed_/1/8/csm_2020_03_04_MUSIC_ORPHEUM_c_LenaPrehal_006_bb44091b1d.jpg')"></div>
+  </div>
+  <div class="panel">
+    <div class="qa" data-reveal>
+      <h3>How will you know your scaling strategy works?</h3>
+      <p>Test at the 2028 festival (count working hours, number of e-mails sent, errors found).</p>
+    </div>
+  </div>
+</section>
+
+<footer data-bg="#000000" data-fg="#fff">
+  <h2>Ask once, use twice.</h2>
+  <div class="cols">
+    <div>
+      <h4>AI disclosure and declaration of independence</h4>
+      <p>I declare that I wrote this pitch independently. I used Claude (Anthropic) to understand the assignment, to organize my notes into the required sections, to collect public facts from elevate.at, to correct grammar and to build this web page. The idea, the analysis, the objectives and the text are my own.</p>
+    </div>
+    <div>
+      <h4>Sources</h4>
+      <ul>
+        <li><a href="https://docs.google.com/document/d/1XJ8blrC7E5K0OfOm0Wd6ZVO9_x4OzBdLCTXDq4B_MZQ/edit">Assignment 1 and Business Brief (Carrie Hane)</a></li>
+        <li><a href="https://elevate.at/de/partner/">Elevate Festival: partners and sponsors</a></li>
+        <li><a href="https://elevate.at/de/archiv/">Elevate Festival: archive</a></li>
+        <li><a href="https://www.apsprofessions.gov.au/content-strategy/start-content-strategy/tips-pitching-case">APS Professions: Tips for pitching your case</a></li>
+        <li><a href="https://www.tanzenconsulting.com/blog/2017/6/1/how-the-raci-model-helps-get-things-done">Hane: How the RACI Model Helps Get Things Done</a></li>
+      </ul>
+    </div>
+  </div>
+  <p class="fine">Course assignment for FH JOANNEUM, Master Content Strategy (COS25). The two-edition scenario comes from the course brief and is fictional; this page is not affiliated with Elevate Festival. Photos: Elevate Festival (elevate.at), by Philippe Gerlach, Johanna Lamprecht, Clara Wildberger and Lena Prehal. © 2026 Oleg Mitrofanov.</p>
+</footer>
+
+<script>
+(function () {
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // 52 dots
+  var dots = document.getElementById('dots');
+  for (var i = 0; i < 52; i++) {
+    var d = document.createElement('i');
+    d.style.transitionDelay = (i * 18) + 'ms';
+    dots.appendChild(d);
+  }
+
+  // Reveal on scroll
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+    });
+  }, { threshold: 0.18 });
+  document.querySelectorAll('[data-reveal]').forEach(function (el) { io.observe(el); });
+  var dotsIO = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (e.isIntersecting) {
+        dots.classList.add('in');
+        setTimeout(function () { dots.classList.add('twice'); }, 1600);
+        dotsIO.disconnect();
+      }
+    });
+  }, { threshold: 0.4 });
+  dotsIO.observe(dots);
+
+  // Count-up numbers
+  var countIO = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (!e.isIntersecting) return;
+      var el = e.target, target = +el.getAttribute('data-count');
+      countIO.unobserve(el);
+      if (reduce) { el.textContent = target; return; }
+      var start = null;
+      function step(t) {
+        if (!start) start = t;
+        var p = Math.min((t - start) / 1200, 1);
+        el.textContent = Math.round(target * (1 - Math.pow(1 - p, 3)));
+        if (p < 1) requestAnimationFrame(step);
+      }
+      requestAnimationFrame(step);
+    });
+  }, { threshold: 0.6 });
+  document.querySelectorAll('[data-count]').forEach(function (el) { el.textContent = '0'; countIO.observe(el); });
+
+  // Background colour shifts between sections
+  var root = document.documentElement;
+  var colorTargets = document.querySelectorAll('[data-bg]');
+  var colorIO = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (e.isIntersecting) {
+        root.style.setProperty('--bg', e.target.getAttribute('data-bg'));
+        root.style.setProperty('--fg', e.target.getAttribute('data-fg'));
+      }
+    });
+  }, { rootMargin: '-45% 0px -45% 0px' });
+  colorTargets.forEach(function (el) { colorIO.observe(el); });
+
+  // Active nav item
+  var links = {};
+  document.querySelectorAll('.bar nav a').forEach(function (a) { links[a.getAttribute('href').slice(1)] = a; });
+  var navIO = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      var a = links[e.target.id];
+      if (a && e.isIntersecting) {
+        Object.keys(links).forEach(function (k) { links[k].classList.remove('active'); });
+        a.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-40% 0px -55% 0px' });
+  document.querySelectorAll('.chapter').forEach(function (s) { navIO.observe(s); });
+
+  if (reduce) return;
+
+  // Parallax, title split and the moving photo strip
+  var speedEls = document.querySelectorAll('[data-speed]');
+  var shiftEls = document.querySelectorAll('[data-shift]');
+  var strip = document.querySelector('[data-strip]');
+  var ticking = false;
+  function frame() {
+    var vh = window.innerHeight, y = window.scrollY;
+    speedEls.forEach(function (el) {
+      var r = el.parentElement.getBoundingClientRect();
+      var offset = (r.top + r.height / 2 - vh / 2) * parseFloat(el.getAttribute('data-speed'));
+      el.style.transform = 'translate3d(0,' + offset.toFixed(1) + 'px,0)';
+    });
+    shiftEls.forEach(function (el) {
+      el.style.transform = 'translate3d(' + (y * parseFloat(el.getAttribute('data-shift'))).toFixed(1) + 'px,0,0)';
+    });
+    if (strip) {
+      var sr = strip.parentElement.getBoundingClientRect();
+      var p = (vh - sr.top) / (vh + sr.height);
+      p = Math.max(0, Math.min(1, p));
+      var max = strip.scrollWidth - window.innerWidth;
+      strip.style.transform = 'translate3d(' + (-p * Math.max(max, 0)).toFixed(1) + 'px,0,0)';
+    }
+    ticking = false;
+  }
+  window.addEventListener('scroll', function () {
+    if (!ticking) { ticking = true; requestAnimationFrame(frame); }
+  }, { passive: true });
+  window.addEventListener('resize', frame);
+  frame();
+})();
+</script>
+</body>
+</html>
